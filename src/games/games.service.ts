@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
-import { Connection, Repository } from 'typeorm';
+import { Connection, QueryBuilder, QueryRunner, Repository } from 'typeorm';
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import {games} from './entities/game.entity'
@@ -26,35 +26,62 @@ export class GamesService {
   }
 
   async findWithPublisher(title?: string){
-      const rawData = await this.connection.query(
-        `SELECT g.title as Game_Title, p.name, p.siret, p.phone FROM gamesdb.games g 
-        left join gamesdb.publisher p 
-        on g.publisherId = p.id
-        WHERE title = '${title.toString()}';`
-      )
-    return rawData;
+    const queryRunner = await this.connection.createQueryRunner(); 
+    return await this.connection
+      .createQueryBuilder(games, 'games', queryRunner)
+      .select('games.title', 'game_title')
+      .addSelect('p.name', 'publisher_name')
+      .addSelect('p.siret', 'publisher_siret')
+      .addSelect('p.phone', 'publisher_phone')
+      .leftJoin('publisher','p' , 'p.id = games.publisherId')
+      .where(`games.title = '${title}'`)
+      .getRawMany();  
+  }
+ 
+  async delProcess(queryRunner: QueryRunner):Promise<any>{ 
+   try {
+     return await this.connection
+     .createQueryBuilder(queryRunner)
+     .delete()
+     .from(games)
+     .where('timestampdiff( month, releaseDate, sysdate() ) > 18')
+     .execute();   
+   } catch (error) {
+    console.log(error);
+   }
+  }
+
+  async updtProcess(queryRunner: QueryRunner):Promise<any>{ 
+   try {
+     return await this.connection
+     .createQueryBuilder(queryRunner)
+     .update(games)
+     .set({
+       price: () => 'price - price  * (0.20)',
+     })
+     .where('timestampdiff( month, releaseDate, sysdate() ) between 12 and 18')
+     .execute();
+     
+   } catch (error) {
+     console.log(error);
+   }
   }
 
   async cleanUpdateProcess(){
     let result: string;
-    const queryRunner = await this.connection.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      await queryRunner.query(`delete from gamesdb.games where timestampdiff( month, releaseDate, sysdate() ) > 18;`);
-      await queryRunner.query(`update gamesdb.games set price = price - price * (0.20) where timestampdiff( month, releaseDate, sysdate()) between 12 and <18;`);
-
-      await queryRunner.commitTransaction();
-      result ='Task Finished';
-    } catch (error) {
-      console.log(error)
-      await queryRunner.rollbackTransaction()
-      result ='Error, Task not finished';
-    }finally{
-      await queryRunner.release()
-    }
-    return result;
+     const queryRunner = await this.connection.createQueryRunner();    
+      try {
+        await this.delProcess(queryRunner);
+        await this.updtProcess(queryRunner);
+        result ='Task Finished';
+      } catch (error) {
+        console.log(error);
+        result ='Error, Task not finished';
+      }
+     return result;
   }
+
+
 
   findOne(id: number) {
     return this.gameRepository.findOne(id);;

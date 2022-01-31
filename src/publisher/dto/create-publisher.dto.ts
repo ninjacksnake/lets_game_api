@@ -1,15 +1,18 @@
+import { IsNotEmpty, IsNumberString } from "class-validator";
+
 export class CreatePublisherDto {
 
+    @IsNumberString()
     id: number;
+    @IsNotEmpty()
     name: string;
+    
+    @IsNotEmpty()
+    @IsNumberString()
     siret: number;
+    @IsNotEmpty()
     phone: string
 
-    constructor(id: number, name: string, siret: number, phone: string) {
-        this.id = id;
-        this.name = name;
-        this.siret = siret;
-        this.phone = phone;
-    }
+  
 
 }

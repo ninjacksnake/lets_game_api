@@ -1,22 +1,20 @@
-import { publisher } from "src/publisher/entities/publisher.entity";
+import { IsDateString, IsNotEmpty, IsNumber } from "class-validator";
+
 
 
 export class CreateGameDto {
+
     id: number;
+    @IsNotEmpty()
     title: string;
+    @IsNumber()
     price: number;
-    publisherid: number;
+    @IsNumber()
+    publisherId: number;
+    @IsNotEmpty()
     tags: string;
+    @IsNotEmpty()
     releaseDate: Date;
-    
-    // constructor(id: number, title: string, price: number, publisherid: number, tags: string, releaseDate: Date) {
-    //     this.id = id;
-    //     this.title = title;
-    //     this.price = price;
-    //     this.publisherid = publisherid;
-    //     this.tags = tags;
-    //     this.releaseDate = releaseDate;
-    // }
 }
 
 
