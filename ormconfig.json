@@ -1,0 +1,10 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "Michael",
+    "password": "",
+    "database": "Gamesdb",
+    "entities": ["games"],
+    "synchronize": true
+}
