@@ -27,8 +27,7 @@ export class GamesController {
   async findOne(@Param('id') id: string) {
     function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
     let returnValue: any ;
-    console.log(isNumber(id));
-    console.log(typeof(id))
+
     if (!isNumber(id)){
       returnValue = await this.gamesService.findWithPublisher(id);
     }else{
