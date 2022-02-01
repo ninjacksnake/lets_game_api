@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsNumberString } from "class-validator";
 
 export class CreatePublisherDto {
-
     @IsNumberString()
     id: number;
     @IsNotEmpty()
@@ -12,7 +11,4 @@ export class CreatePublisherDto {
     siret: number;
     @IsNotEmpty()
     phone: string
-
-  
-
 }

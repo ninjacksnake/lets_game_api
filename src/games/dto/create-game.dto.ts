@@ -3,7 +3,6 @@ import { IsDateString, IsNotEmpty, IsNumber } from "class-validator";
 
 
 export class CreateGameDto {
-
     id: number;
     @IsNotEmpty()
     title: string;
