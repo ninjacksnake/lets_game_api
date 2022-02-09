@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PublisherModule } from './publisher/publisher.module';
 import { games } from './games/entities/game.entity';
 import { getConnectionOptions } from 'typeorm';
-import { publisher } from './publisher/entities/publisher.entity';
+import { Publisher } from './publisher/entities/publisher.entity';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { publisher } from './publisher/entities/publisher.entity';
       username: "Michael",
       password: "",
       database: "Gamesdb",
-      entities: [games, publisher],
+      entities: [games, Publisher],
       synchronize: false
     }),
     GamesModule,

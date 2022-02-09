@@ -1,5 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import {  IsDateString, IsNotEmpty, IsNumberString } from 'class-validator';
+import { Publisher } from 'src/publisher/entities/publisher.entity';
 import { CreateGameDto } from './create-game.dto';
 
 
@@ -12,8 +13,8 @@ export class UpdateGameDto extends PartialType(CreateGameDto) {
     @IsNumberString()
     price: number;
     @IsNotEmpty()
-    publisherId: number;
-    tags: string;
+    publisher: Publisher;
+    tags: string[];
     @IsDateString()
     releaseDate: Date;    
 }

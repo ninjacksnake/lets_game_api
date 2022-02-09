@@ -3,13 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { UpdatePublisherDto } from './dto/update-publisher.dto';
-import { publisher } from './entities/publisher.entity';
+import { Publisher } from './entities/publisher.entity';
 
 @Injectable()
 export class PublisherService {
   constructor(
-    @InjectRepository(publisher)
-    private publisherRepository: Repository<publisher>,
+    @InjectRepository(Publisher)
+    private publisherRepository: Repository<Publisher>,
   ){}
 
   create(createPublisherDto: CreatePublisherDto) {

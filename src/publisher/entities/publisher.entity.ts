@@ -2,7 +2,7 @@ import { games } from "src/games/entities/game.entity";
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, OneToMany} from "typeorm";
 
 @Entity('publisher')
-export class publisher{
+export class Publisher{
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -14,9 +14,7 @@ export class publisher{
 
     @Column()
     phone: string;
-  
-   
-
-
-
+    
+    @OneToMany(()=> games, game => game.publisher)
+    games?: games[];
 }

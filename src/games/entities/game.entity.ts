@@ -1,5 +1,5 @@
-//import { publisher } from "src/publisher/entities/publisher.entity";
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Publisher } from "src/publisher/entities/publisher.entity";
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany, ManyToOne } from "typeorm";
 
 
 @Entity()
@@ -13,11 +13,12 @@ export class games {
     @Column()
     price: number;
 
-    @Column()
-    publisherId: number;
+    @ManyToOne(()=> Publisher, publisher => publisher.id)
+    @JoinColumn({name: 'publisherId'})
+    publisher:  Publisher ;
 
-    @Column()
-    tags: string;
+    @Column("simple-array")
+    tags: string[];
 
     @Column()
     releaseDate: Date;

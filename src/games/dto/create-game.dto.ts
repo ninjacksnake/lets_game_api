@@ -1,5 +1,5 @@
-import { IsDateString, IsNotEmpty, IsNumber } from "class-validator";
-
+import {  IsNotEmpty, IsNumber } from "class-validator";
+import { Publisher } from "src/publisher/entities/publisher.entity";
 
 
 export class CreateGameDto {
@@ -8,10 +8,10 @@ export class CreateGameDto {
     title: string;
     @IsNumber()
     price: number;
-    @IsNumber()
-    publisherId: number;
     @IsNotEmpty()
-    tags: string;
+    publisher: Publisher;
+    @IsNotEmpty()
+    tags: string[];
     @IsNotEmpty()
     releaseDate: Date;
 }
